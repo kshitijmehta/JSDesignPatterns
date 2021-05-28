@@ -1,40 +1,258 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+  <title>JavaScript Design Patterns</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/black.css" id="theme">
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+</head>
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>JavaScript Design Patterns</section>
+      <section>Functions</section>
+      <section>
+        <h3>API Patterns</h3>
+        <small>Help you provide better and cleaner interfaces to your functions</small>
+        <small>
+          <ul>
+            <li class="fragment" data-fragment-index="1">
+              <b>Configration Object</b> - <span>(tsconfigs, lintconfigs)</span>
+            </li>
+            <li class="fragment" data-fragment-index="2">
+              <b>Callbacks</b> - <span>(Timeouts, Async Event, etc)</span>
+            </li>
+            <li class="fragment" data-fragment-index="3">
+              <b>Returning Functions</b> - <span>(Closures, private variables)</span>
+            </li>
+            <li class="fragment" data-fragment-index="4">
+              <b>Curring</b> - <span>(Return light version of functions)</span>
+              <pre class="fragment" data-fragment-index="5">
+                <code data-trim data-noescape>
+                  // Normal usage
+                  const PERCENT_120 = 1.2
+                  const multiply = (a, b) => a * b
+                  const newSalary = multiply(salary, PERCENT_120)
+
+                  // Currying usage
+                  const multiply = a => b => a * b
+                  const increase20Percent = multiply(1.2)
+                  const newSalary = increase20Percent(salary)
+                </code>
+              </pre>
+            </li>
+          </ul>
+        </small>
+      </section>
+      <section>
+        <h3>Initialization Patterns</h3>
+        <small>Initialize and setup task in a cleaner & structured way</small>
+        <small>
+          <ul>
+            <li class="fragment" data-fragment-index="1">
+              <b>Immediate Funtions(IIFI)</b> - <span>(JQuery's $ uses it)</span>
+            </li>
+            <li class="fragment" data-fragment-index="2">
+              <b>Immedidate Object Initialization</b> - <span>(Defining private scrope Objects)</span>
+              <pre class="fragment" data-fragment-index="3">
+                <code data-trim data-noescape>
+                  ({
+                    maxwidth: 600,
+                    maxheight: 400,
+                    gimmeMax: function () {
+                      return this.maxwidth + "x" + this.maxheight;
+                    },
+                    init: function () {
+                      console.log(this.gimmeMax());
+                    }
+                   }).init();
+  
+                   //Output - 600 x 400
+                </code>
+              </pre>
+            </li>
+          </ul>
+        </small>
+      </section>
+      <section>
+        <h3>Preformance Patterns</h3>
+        <small>Speed up your code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</small>
+        <small>
+          <ul>
+            <li class="fragment" data-fragment-index="1">
+              <b>Memoization</b> - <span>(Compute only once)</span>
+            </li>
+            <li class="fragment" data-fragment-index="2">
+              <b>Self-Defining Functions</b> - <span>(Assign current pointer to new function)</span>
+              <pre class="fragment" data-fragment-index="3">
+                <code data-trim data-noescape>
+                  var scareMe = function () {
+                    alert("Boo!");
+                    scareMe = function () {
+                      alert("Double boo!");
+                    };
+                  };
+                  //
+                  scareMe(); // Boo!
+                  scareMe(); // Double boo!
+                </code>
+              </pre>
+            </li>
+          </ul>
+        </small>
+      </section>
+      <section>Objects</section>
+      <section>
+        <h3>Module Pattern</h3>
+        <small>Helps to manage code as it grows. Uses following concepts</small>
+        <small>
+          <ul>
+            <li class="fragment" data-fragment-index="1">
+              <b>Namespace</b> - <span>(Reduce the number of globals required)</span>
+            </li>
+            <li class="fragment" data-fragment-index="2">
+              <b>Immediate Functions</b> - <span>(Creates private env for code)</span>
+            </li>
+            <li class="fragment" data-fragment-index="3">
+              <b>Private & Privileged Members</b> - <span>(Expose the bare minimum)</span>
+            </li>
+            <li class="fragment" data-fragment-index="4">
+              <b>Declaring Dependencies</b> - <span>(Import other modules)</span>
+              <pre class="fragment" data-fragment-index="5">
+                <code data-trim data-noescape>
+                 MYAPP.namespace('MYAPP.utilities.array');
+                 MYAPP.utilities.array = (function(){
+                   //dependencies
+                   var lang = MYAPP.utilities.lang,
+                   //private properties
+                   array_string = "[object, Array]",
+                   ops = Object.prototype.toString;
+
+                   return{
+                     isArray: function(arr){
+                       return ops.call(a) == array_string;
+                     }
+                   }
+                 })();
+                </code>
+              </pre>
+            </li>
+          </ul>
+        </small>
+      </section>
+      <section>
+        <h3>Static Members Pattern</h3>
+        <small>Properties and methods are those that don’t change from one instance to another</small>
+        <small>
+          <ul>
+            <li class="fragment" data-fragment-index="3">
+              <b>Public Static Members</b> - <span>(Member's value can be alter from outside)</span>
+            </li>
+            <li class="fragment" data-fragment-index="4">
+              <b>Private Static Members</b> - <span>(Member's value can be alter only from within)</span>
+              <pre class="fragment" data-fragment-index="5">
+                <code data-trim data-noescape data-line-numbers="1-21|22-28">
+                  // constructor
+                  var Gadget = (function () {
+                   // static variable/property
+                   var counter = 0,
+                   NewGadget;
+                   // this will become the
+                   // new constructor implementation
+                   NewGadget = function () {
+                     counter += 1;
+                   };
+                   // a privileged method
+                   NewGadget.prototype.getLastId = function () {
+                     return counter;
+                   };
+                   // Public Member
+                   NewGadget.isCostly = function(){
+                     return "Apple is costly!!"
+                   }
+                   // overwrite the constructor
+                   return NewGadget;
+                  }());
+
+                  var iphone = new Gadget();
+                  iphone.getLastId(); // 1
+                  var ipod = new Gadget();
+                  ipod.getLastId(); // 2
+
+                  Gadget.isCostly()// Apple is costly!!
+                </code>
+              </pre>
+            </li>
+          </ul>
+        </small>
+      </section>
+      <section>
+        <h3>Channing Pattern</h3>
+        <small>When you have no meaningful return values, you return <span style="font-style: italic;">this</span></small>
+        <small>
+          <ul>
+            <li class="fragment" data-fragment-index="1">
+              <b>It's used by a very famous JS Lib.</b> - <span>(Answer to this after the below example )</span>
+              <pre class="fragment" data-fragment-index="2">
+                <code data-trim data-noescape>
+                  var obj = {
+                    value: 1,
+                    increment: function () {
+                    this.value += 1;
+                    return this;
+                    },
+                    add: function (v) {
+                    this.value += v;
+                    return this;
+                    },
+                    shout: function () {
+                    alert(this.value);
+                    }
+                   };
+                  // chain method call
+                  obj.increment().add(3).shout(); //5
+                </code>
+              </pre>
+            </li>
+            <li class="fragment" data-fragment-index="3">
+              Query is the lib that uses it. 
+              <pre>
+                <code data-trim data-noescape>
+                  document.getElementsByTagName('head')[0].appendChild(newnode);
+                </code>
+              </pre>
+            </li>
+          </ul>
+        </small>
+      </section>
+      <section>Part 2 Coming soon !</section>
+    </div>
+  </div>
+
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
+
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
+
 </html>
